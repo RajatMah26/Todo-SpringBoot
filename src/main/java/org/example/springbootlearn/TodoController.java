@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
+@RequestMapping("/api/v1/todos")
 public class TodoController {
 
     private  static List<Todo> todosList;
@@ -18,7 +19,7 @@ public class TodoController {
         todosList.add(new Todo(2,true,"Todo1",2));
     }
 
-    @GetMapping("/todos")
+    @GetMapping
     public ResponseEntity<List<Todo>> getTodos(){
        // return ResponseEntity.status(HttpStatus.OK).body(todosList);
         return ResponseEntity.ok(todosList);
@@ -27,10 +28,23 @@ public class TodoController {
 
     // @ResponseStatus(HttpStatus.CREATED) we can use for status annotaions to update
 
-    @PostMapping("/todos")
+    @PostMapping
     public ResponseEntity<Todo>  createTodo(@RequestBody Todo newTodo){
             todosList.add(newTodo);
             return ResponseEntity.status(HttpStatus.CREATED).body(newTodo);
+    }
+
+
+    @GetMapping("/{todoId}")
+    public ResponseEntity<Todo> getTodoById(@PathVariable Long todoId){
+        for(Todo todo :todosList){
+            if(todo.getId()==todoId){
+                return ResponseEntity.ok(todo);
+            }
+        }
+
+       return ResponseEntity.notFound().build();
+        //return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
 
 
