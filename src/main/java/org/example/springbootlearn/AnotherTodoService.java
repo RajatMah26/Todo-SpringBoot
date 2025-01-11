@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 public class AnotherTodoService implements TodoService{
 
+    @TimeMonitor
+
     @Override
     public String doSomething() {
         return "Something from another todo serive";
